@@ -1,16 +1,4 @@
-﻿/*******************************************************************************
-File:      EnemyChaseLogic.cs
-Author:    Victor Cecci
-DP Email:  victor.cecci@digipen.edu
-Date:      12/6/2018
-Course:    CS186
-Section:   Z
-
-Description:
-    This component is responsible for the shoot behavior on some enemies.
-
-*******************************************************************************/
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(EnemyChaseLogic))]
 public class EnemyShootLogic : MonoBehaviour

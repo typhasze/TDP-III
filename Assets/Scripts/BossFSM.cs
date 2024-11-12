@@ -131,8 +131,7 @@ public class BossFSM : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log($"Boss hit by {other.gameObject.name}");
-        if (other.gameObject.CompareTag("PlayerDamage"))
+        Debug.Log($"Boss hit by {other.gameObject.name}");        if (other.gameObject.CompareTag("PlayerDamage"))
         {
             TakeDamage(10f);
         }
