@@ -68,7 +68,7 @@ public class BossFSM : MonoBehaviour
         }
         else if (currentHealth <= 0f)
         {
-            Destroy(gameObject);
+            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
         }
     }
 
