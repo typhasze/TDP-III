@@ -37,12 +37,18 @@ public class EnemyChaseLogic : MonoBehaviour
         if (stateName == "Base")
         {
             currentState = EnemyState.Base;
+            if (Player != null)
+            {
+                float distanceToPlayer = Vector2.Distance(transform.position, Player.position);
+                Aggroed = distanceToPlayer <= AggroRange;
+            }
         }
         else if (stateName == "Charging")
         {
             currentState = EnemyState.Charging;
             stateTimer = ChargePreparationTime;
             RB.linearVelocity = Vector2.zero;
+            Aggroed = true;
         }
     }
 
@@ -72,15 +78,20 @@ public class EnemyChaseLogic : MonoBehaviour
             Aggroed = false;
             RB.linearVelocity = Vector2.zero;
         }
-        else if (distanceToPlayer > StopDistanceBuffer)
+        else if (distanceToPlayer <= AggroRange)
         {
-            transform.up = dir.normalized;
-            RB.linearVelocity = transform.up * MoveSpeed;
+            Aggroed = true;
+            if (distanceToPlayer > StopDistanceBuffer)
+            {
+                transform.up = dir.normalized;
+                RB.linearVelocity = transform.up * MoveSpeed;
+            }
         }
     }
 
     private void HandleCharging(Vector2 dir)
     {
+        Aggroed = true;
         stateTimer -= Time.deltaTime;
         
         if (stateTimer <= 0)
