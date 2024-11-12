@@ -7,7 +7,6 @@ TagManager:
   - Wall
   - PlayerDamage
   - BossDamage
-  - WallDestructable
   - Enemy
   layers:
   - Default

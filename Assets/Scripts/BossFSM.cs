@@ -23,6 +23,14 @@ public class BossFSM : MonoBehaviour
     private float angerInterval = 10f;
     private BossState previousState;
 
+    [SerializeField] private int wallsRequired = 2; // Number of walls that need to be destroyed
+    private int wallsDestroyed = 0;
+    private bool isAngryFromWalls = false;
+
+    private BossAngerWall[] angerWalls;
+
+    [SerializeField] private SpriteRenderer bossRenderer;
+
     private void Start()
     {
         currentHealth = maxHealth;
@@ -30,6 +38,9 @@ public class BossFSM : MonoBehaviour
         healthBar = GetComponentInChildren<FloatingHealthBar>();
         shootLogic = GetComponent<EnemyShootLogic>();
         chaseLogic = GetComponent<EnemyChaseLogic>();
+        angerWalls = FindObjectsByType<BossAngerWall>(FindObjectsSortMode.None);
+        bossRenderer = GetComponentInChildren<SpriteRenderer>();
+        UpdateBossColor();
     }
 
     public void TakeDamage(float damage)
@@ -63,7 +74,13 @@ public class BossFSM : MonoBehaviour
 
     private void TransitionToState(BossState newState)
     {
+        if (currentState == BossState.Angry)
+        {
+            ResetWalls();
+        }
+
         currentState = newState;
+        UpdateBossColor();
         
         switch (currentState)
         {
@@ -116,16 +133,40 @@ public class BossFSM : MonoBehaviour
         Debug.Log("Entering Angry State");
     }
 
+    public void WallDestroyed()
+    {
+        wallsDestroyed++;
+        if (wallsDestroyed >= wallsRequired && !isAngryFromWalls && currentState != BossState.Angry)
+        {
+            isAngryFromWalls = true;
+            previousState = currentState;
+            TransitionToState(BossState.Angry);
+            angerTimer = 0f;
+        }
+    }
+
+    private void ResetWalls()
+    {
+        wallsDestroyed = 0;
+        foreach (var wall in angerWalls)
+        {
+            wall.ResetWall();
+        }
+    }
+
     private void Update()
     {
         if (currentState != BossState.Angry)
         {
-            angerTimer += Time.deltaTime;
-            if (angerTimer >= angerInterval)
+            if (isAngryFromWalls)
             {
-                previousState = currentState;
-                TransitionToState(BossState.Angry);
-                angerTimer = 0f;
+                angerTimer += Time.deltaTime;
+                if (angerTimer >= angerInterval && currentState != BossState.Angry)
+                {
+                    previousState = currentState;
+                    TransitionToState(BossState.Angry);
+                    angerTimer = 0f;
+                }
             }
         }
         else
@@ -133,6 +174,7 @@ public class BossFSM : MonoBehaviour
             angerTimer += Time.deltaTime;
             if (angerTimer >= angerDuration)
             {
+                isAngryFromWalls = false;
                 TransitionToState(previousState);
                 angerTimer = 0f;
             }
@@ -174,10 +216,28 @@ public class BossFSM : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {   
-        Debug.Log("Boss hit by player");
         if (other.gameObject.CompareTag("PlayerDamage"))
         {
             TakeDamage(10f);
+        }
+    }
+
+    private void UpdateBossColor()
+    {
+        switch (currentState)
+        {
+            case BossState.PhaseOne:
+                bossRenderer.material.color = Color.white; // Normal color
+                break;
+            case BossState.PhaseTwo:
+                bossRenderer.material.color = new Color(1f, 0.7f, 0f); // Orange-ish
+                break;
+            case BossState.PhaseThree:
+                bossRenderer.material.color = new Color(0.7f, 0f, 1f); // Purple-ish
+                break;
+            case BossState.Angry:
+                bossRenderer.material.color = Color.red; // Crimson/red
+                break;
         }
     }
 }

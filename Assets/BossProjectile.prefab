@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5138278115261585673}
   m_Layer: 0
   m_Name: Triangle
-  m_TagString: Enemy
+  m_TagString: BossDamage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -151,7 +151,7 @@ GameObject:
   - component: {fileID: 1100780534239406146}
   m_Layer: 0
   m_Name: BossProjectile
-  m_TagString: Enemy
+  m_TagString: BossDamage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
