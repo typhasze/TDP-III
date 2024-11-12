@@ -6,7 +6,8 @@ public class BossFSM : MonoBehaviour
     {
         PhaseOne,    // 100% - 50% HP
         PhaseTwo,    // 50% - 25% HP
-        PhaseThree   // 25% - 0% HP
+        PhaseThree,  // 25% - 0% HP
+        Angry        // Special behavior
     }
 
     [SerializeField] private float maxHealth = 100f;
@@ -15,12 +16,20 @@ public class BossFSM : MonoBehaviour
 
     private FloatingHealthBar healthBar;
     private EnemyShootLogic shootLogic;
+    private EnemyChaseLogic chaseLogic;
+
+    private float angerTimer = 0f;
+    private float angerDuration = 5f;
+    private float angerInterval = 10f;
+    private BossState previousState;
+
     private void Start()
     {
         currentHealth = maxHealth;
         currentState = BossState.PhaseOne;
         healthBar = GetComponentInChildren<FloatingHealthBar>();
         shootLogic = GetComponent<EnemyShootLogic>();
+        chaseLogic = GetComponent<EnemyChaseLogic>();
     }
 
     public void TakeDamage(float damage)
@@ -67,6 +76,9 @@ public class BossFSM : MonoBehaviour
             case BossState.PhaseThree:
                 HandlePhaseThree();
                 break;
+            case BossState.Angry:
+                HandleAngryState();
+                break;
         }
     }
 
@@ -74,6 +86,7 @@ public class BossFSM : MonoBehaviour
     {
         // Implement phase one behavior (100% - 50% HP)
         shootLogic.UseAttackPattern = false;
+        chaseLogic.SetState("Base");
         Debug.Log("Entering Phase One");
     }
 
@@ -82,6 +95,7 @@ public class BossFSM : MonoBehaviour
         // Implement phase two behavior (50% - 25% HP)
         shootLogic.UseAttackPattern = true;
         shootLogic.SetPhase(2);
+        chaseLogic.SetState("Base");
         Debug.Log("Entering Phase Two");
     }
 
@@ -90,11 +104,40 @@ public class BossFSM : MonoBehaviour
         // Implement phase three behavior (25% - 0% HP)
         shootLogic.UseAttackPattern = true;
         shootLogic.SetPhase(3);
+        chaseLogic.SetState("Base");
         Debug.Log("Entering Phase Three");
+    }
+
+    private void HandleAngryState()
+    {
+        // Implement angry state behavior
+        shootLogic.UseAttackPattern = false;
+        chaseLogic.SetState("Charging");
+        Debug.Log("Entering Angry State");
     }
 
     private void Update()
     {
+        if (currentState != BossState.Angry)
+        {
+            angerTimer += Time.deltaTime;
+            if (angerTimer >= angerInterval)
+            {
+                previousState = currentState;
+                TransitionToState(BossState.Angry);
+                angerTimer = 0f;
+            }
+        }
+        else
+        {
+            angerTimer += Time.deltaTime;
+            if (angerTimer >= angerDuration)
+            {
+                TransitionToState(previousState);
+                angerTimer = 0f;
+            }
+        }
+
         #region Debugging
         // Set health to 75% (Phase One)
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -130,8 +173,9 @@ public class BossFSM : MonoBehaviour
     }
 
     private void OnTriggerEnter2D(Collider2D other)
-    {
-        Debug.Log($"Boss hit by {other.gameObject.name}");        if (other.gameObject.CompareTag("PlayerDamage"))
+    {   
+        Debug.Log("Boss hit by player");
+        if (other.gameObject.CompareTag("PlayerDamage"))
         {
             TakeDamage(10f);
         }

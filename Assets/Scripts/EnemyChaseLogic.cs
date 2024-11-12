@@ -8,10 +8,23 @@ public class EnemyChaseLogic : MonoBehaviour
     public float MoveSpeed = 1f;
     public float StopDistanceBuffer = 1f; // Buffer distance to stop at
 
+    public float ChargeSpeed = 3f; // Faster than normal move speed
+    public float ChargePreparationTime = 1f; // Time to wait before charging
+    public float ChargeDuration = 2f; // How long to charge for
+
     public bool Aggroed = false;
 
     private Transform Player;
     private Rigidbody2D RB;
+
+    private enum EnemyState
+    {
+        Base,
+        Charging
+    }
+
+    private EnemyState currentState = EnemyState.Base;
+    private float stateTimer = 0f;
 
     void Start()
     {
@@ -19,36 +32,70 @@ public class EnemyChaseLogic : MonoBehaviour
         RB = GetComponent<Rigidbody2D>();
     }
 
+    public void SetState(string stateName)
+    {
+        if (stateName == "Base")
+        {
+            currentState = EnemyState.Base;
+        }
+        else if (stateName == "Charging")
+        {
+            currentState = EnemyState.Charging;
+            stateTimer = ChargePreparationTime;
+            RB.linearVelocity = Vector2.zero;
+        }
+    }
+
     void Update()
     {
-        // No reference to player, nothing to chase
-        if (Player == null || !Player.gameObject)
-        {
-            RB.linearVelocity = Vector2.zero;
-            Aggroed = false;
-            return;
-        }
+        if (Player == null) return;
 
-        // Calculate direction and distance to the player
         var dir = Player.position - transform.position;
         float distanceToPlayer = dir.magnitude;
 
-        // If player is within aggro range and beyond the buffer distance, chase
-        if (distanceToPlayer <= AggroRange && distanceToPlayer > StopDistanceBuffer)
+        switch (currentState)
         {
-            // Rotate to face the player
-            transform.up = dir.normalized;
+            case EnemyState.Base:
+                HandleBaseChasing(dir, distanceToPlayer);
+                break;
 
-            Aggroed = true;
-
-            // Move towards the player
-            RB.linearVelocity = transform.up * MoveSpeed;
+            case EnemyState.Charging:
+                HandleCharging(dir);
+                break;
         }
-        else if (distanceToPlayer >= DeaggroRange || distanceToPlayer <= StopDistanceBuffer)
+    }
+
+    private void HandleBaseChasing(Vector2 dir, float distanceToPlayer)
+    {
+        if (distanceToPlayer >= DeaggroRange)
         {
-            // Stop chasing if beyond deaggro range or within stop buffer
             Aggroed = false;
             RB.linearVelocity = Vector2.zero;
+        }
+        else if (distanceToPlayer > StopDistanceBuffer)
+        {
+            transform.up = dir.normalized;
+            RB.linearVelocity = transform.up * MoveSpeed;
+        }
+    }
+
+    private void HandleCharging(Vector2 dir)
+    {
+        stateTimer -= Time.deltaTime;
+        
+        if (stateTimer <= 0)
+        {
+            if (RB.linearVelocity.magnitude < 0.1f) // We were stopping, now start charging
+            {
+                transform.up = dir.normalized;
+                RB.linearVelocity = transform.up * ChargeSpeed;
+                stateTimer = ChargeDuration;
+            }
+            else // We were charging, now stop
+            {
+                RB.linearVelocity = Vector2.zero;
+                stateTimer = ChargePreparationTime;
+            }
         }
     }
 }

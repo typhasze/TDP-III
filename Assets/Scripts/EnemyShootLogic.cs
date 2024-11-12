@@ -21,7 +21,7 @@ public class EnemyShootLogic : MonoBehaviour
     private int currentPatternIndex = 0;
     private ShotType[] phase2Pattern = new[] { 
         ShotType.Single, 
-        ShotType.Single, 
+        ShotType.Homing, 
         ShotType.Shotgun 
     };
     private ShotType[] phase3Pattern = new[] { 
