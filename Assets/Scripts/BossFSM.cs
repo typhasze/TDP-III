@@ -11,6 +11,7 @@ public class BossFSM : MonoBehaviour
     }
 
     [SerializeField] private float maxHealth = 100f;
+    [SerializeField] private float damageTaken = 5f;
     private float currentHealth;
     private BossState currentState;
 
@@ -19,8 +20,8 @@ public class BossFSM : MonoBehaviour
     private EnemyChaseLogic chaseLogic;
 
     private float angerTimer = 0f;
-    private float angerDuration = 5f;
-    private float angerInterval = 10f;
+    [SerializeField] private float angerDuration = 5f;
+    [SerializeField] private float angerInterval = 10f;
     private BossState previousState;
 
     [SerializeField] private int wallsRequired = 2; // Number of walls that need to be destroyed
@@ -218,7 +219,7 @@ public class BossFSM : MonoBehaviour
     {   
         if (other.gameObject.CompareTag("PlayerDamage"))
         {
-            TakeDamage(10f);
+            TakeDamage(damageTaken);
         }
     }
 

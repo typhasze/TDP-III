@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerHealth : MonoBehaviour
 {
     [SerializeField] private float maxHealth = 100f;
+    [SerializeField] private float damageTaken = 10f;
     private float currentHealth;
     private FloatingHealthBar healthBar;
 
@@ -50,7 +51,7 @@ public class PlayerHealth : MonoBehaviour
     {
         if (other.CompareTag("BossDamage"))
         {
-            TakeDamage(10f);
+            TakeDamage(damageTaken);
         }
     }
 } 

@@ -1033,7 +1033,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.5
+  m_Radius: 0.32
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1865,7 +1865,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: -2135585597343286014, guid: 5aa8b770bc43046bc8d993d0d5b7f4a5, type: 3}
+  m_Sprite: {fileID: -3699697277425479114, guid: 23965065f393faa4e95a8d7f7751f6b6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2053,7 +2053,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AggroRange: 8
   DeaggroRange: 10
-  MoveSpeed: 1
+  MoveSpeed: 1.5
   StopDistanceBuffer: 1
   ChargeSpeed: 3
   ChargePreparationTime: 1
@@ -2075,7 +2075,7 @@ MonoBehaviour:
   Type: 0
   Power: 1
   ShootCooldown: 1
-  BulletSpeed: 4
+  BulletSpeed: 6
   ShotgunBullets: 4
   ShotgunAngle: 0.5
   UseAttackPattern: 0
@@ -2121,6 +2121,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  damageTaken: 2.5
+  angerDuration: 10
+  angerInterval: 10
   wallsRequired: 6
   bossRenderer: {fileID: 937266735}
 --- !u!114 &1000155384
@@ -2435,6 +2438,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  damageTaken: 10
 --- !u!114 &1084743071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3321,7 +3325,19 @@ PrefabInstance:
     - target: {fileID: 8520491393590671497, guid: 7b10883bd52f46f4191cb799f437529e, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
+      objectReference: {fileID: -6146700129834819302, guid: dcf4f1195e2532e4b96181c190b042f8, type: 3}
+    - target: {fileID: 8520491393590671497, guid: 7b10883bd52f46f4191cb799f437529e, type: 3}
+      propertyPath: m_Color.b
+      value: 0.40914124
+      objectReference: {fileID: 0}
+    - target: {fileID: 8520491393590671497, guid: 7b10883bd52f46f4191cb799f437529e, type: 3}
+      propertyPath: m_Color.g
+      value: 0.735849
+      objectReference: {fileID: 0}
+    - target: {fileID: 8520491393590671497, guid: 7b10883bd52f46f4191cb799f437529e, type: 3}
+      propertyPath: m_Color.r
+      value: 0.40610537
+      objectReference: {fileID: 0}
     - target: {fileID: 8520491393590671497, guid: 7b10883bd52f46f4191cb799f437529e, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -3329,6 +3345,14 @@ PrefabInstance:
     - target: {fileID: 8520491393590671497, guid: 7b10883bd52f46f4191cb799f437529e, type: 3}
       propertyPath: m_SortingOrder
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8724507314875505378, guid: 7b10883bd52f46f4191cb799f437529e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8724507314875505378, guid: 7b10883bd52f46f4191cb799f437529e, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 8724507314875505378, guid: 7b10883bd52f46f4191cb799f437529e, type: 3}
       propertyPath: m_LocalRotation.w
