@@ -54,4 +54,12 @@ public class PlayerHealth : MonoBehaviour
             TakeDamage(damageTaken);
         }
     }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            TakeDamage(1f);
+        }
+    }
 } 

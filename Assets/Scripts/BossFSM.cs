@@ -32,6 +32,8 @@ public class BossFSM : MonoBehaviour
 
     [SerializeField] private SpriteRenderer bossRenderer;
 
+    [SerializeField] private float shootCooldown = 1f;
+
     private void Start()
     {
         currentHealth = maxHealth;
@@ -82,6 +84,7 @@ public class BossFSM : MonoBehaviour
         if (currentState == BossState.Angry)
         {
             ResetWalls();
+            isAngryFromWalls = false;
         }
 
         currentState = newState;
@@ -107,6 +110,7 @@ public class BossFSM : MonoBehaviour
     private void HandlePhaseOne()
     {
         // Implement phase one behavior (100% - 50% HP)
+        shootLogic.ShootCooldown = shootCooldown;
         shootLogic.UseAttackPattern = false;
         chaseLogic.SetState("Base");
         Debug.Log("Entering Phase One");
@@ -115,6 +119,7 @@ public class BossFSM : MonoBehaviour
     private void HandlePhaseTwo()
     {
         // Implement phase two behavior (50% - 25% HP)
+        shootLogic.ShootCooldown = shootCooldown;
         shootLogic.UseAttackPattern = true;
         shootLogic.SetPhase(2);
         chaseLogic.SetState("Base");
@@ -124,6 +129,7 @@ public class BossFSM : MonoBehaviour
     private void HandlePhaseThree()
     {
         // Implement phase three behavior (25% - 0% HP)
+        shootLogic.ShootCooldown = shootCooldown;
         shootLogic.UseAttackPattern = true;
         shootLogic.SetPhase(3);
         chaseLogic.SetState("Base");
@@ -133,6 +139,7 @@ public class BossFSM : MonoBehaviour
     private void HandleAngryState()
     {
         // Implement angry state behavior
+        shootLogic.ShootCooldown = 100f;
         shootLogic.UseAttackPattern = false;
         chaseLogic.SetState("Charging");
         Debug.Log("Entering Angry State");
@@ -163,15 +170,21 @@ public class BossFSM : MonoBehaviour
     {
         if (currentState != BossState.Angry)
         {
-            if (isAngryFromWalls)
+            if (wallsDestroyed >= wallsRequired)
             {
+                isAngryFromWalls = true;
                 angerTimer += Time.deltaTime;
-                if (angerTimer >= angerInterval && currentState != BossState.Angry)
+                if (angerTimer >= angerInterval)
                 {
                     previousState = currentState;
                     TransitionToState(BossState.Angry);
                     angerTimer = 0f;
                 }
+            }
+            else
+            {
+                isAngryFromWalls = false;
+                angerTimer = 0f;
             }
         }
         else
@@ -179,7 +192,6 @@ public class BossFSM : MonoBehaviour
             angerTimer += Time.deltaTime;
             if (angerTimer >= angerDuration)
             {
-                isAngryFromWalls = false;
                 TransitionToState(previousState);
                 angerTimer = 0f;
             }
