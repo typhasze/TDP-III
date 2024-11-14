@@ -8,6 +8,7 @@ public class PlayerHealth : MonoBehaviour
     private float currentHealth;
     private FloatingHealthBar healthBar;
     private bool isImmortal = false;
+    [SerializeField] private DamageFlash damageFlash;
     [SerializeField] private GameObject shieldEffectPrefab;
     private GameObject activeShieldEffect;
 
@@ -23,6 +24,11 @@ public class PlayerHealth : MonoBehaviour
 
         currentHealth = Mathf.Max(currentHealth - damage, 0f);
         healthBar.UpdateHealthBar(currentHealth, maxHealth);
+        
+        if (damageFlash != null)
+        {
+            damageFlash.Flash();
+        }
 
         if (currentHealth <= 0)
         {
