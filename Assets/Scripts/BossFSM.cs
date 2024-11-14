@@ -34,20 +34,45 @@ public class BossFSM : MonoBehaviour
 
     [SerializeField] private float shootCooldown = 1f;
 
+    [SerializeField] private float maxShield = 3f;
+    private float currentShield;
+    private FloatingShieldBar shieldBar;
+
     private void Start()
     {
         currentHealth = maxHealth;
+        currentShield = maxShield;  // Initialize shield
         currentState = BossState.PhaseOne;
         healthBar = GetComponentInChildren<FloatingHealthBar>();
+        shieldBar = GetComponentInChildren<FloatingShieldBar>();  // Get shield bar reference
         shootLogic = GetComponent<EnemyShootLogic>();
         chaseLogic = GetComponent<EnemyChaseLogic>();
         angerWalls = FindObjectsByType<BossAngerWall>(FindObjectsSortMode.None);
         bossRenderer = GetComponentInChildren<SpriteRenderer>();
         UpdateBossColor();
+
+        // Initialize shield bar
+        if (shieldBar != null)
+        {
+            shieldBar.UpdateShieldBar(currentShield, maxShield);
+        }
     }
 
     public void TakeDamage(float damage)
     {
+        // If we have shield, remove 1 shield point regardless of damage amount
+        if (currentShield > 0)
+        {
+            currentShield -= 1f;  // Always subtract 1 shield point
+            if (currentShield < 0) currentShield = 0;
+            if (shieldBar != null)
+            {
+                shieldBar.UpdateShieldBar(currentShield, maxShield);
+            }
+            return; // Don't damage health while shield is up
+        }
+
+        // Original health damage code
         currentHealth -= damage;
         healthBar.UpdateHealthBar(currentHealth, maxHealth);
         UpdateState();

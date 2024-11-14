@@ -14,7 +14,7 @@ public class FloatingHealthBar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //slider.transform.rotation = Quaternion.Inverse(transform.parent.rotation);
+        
     }
 
     public void UpdateHealthBar(float currentHealth, float maxHealth)
