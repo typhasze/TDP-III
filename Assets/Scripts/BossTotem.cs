@@ -2,17 +2,23 @@ using UnityEngine;
 
 public class BossTotem : MonoBehaviour
 {
-    [SerializeField] private float health = 50f;
+    private float health;
+    [SerializeField] private float maxHealth = 50f;
     private BossFSM boss;
+    private FloatingHealthBar healthBar;
 
     private void Start()
     {
         boss = FindFirstObjectByType<BossFSM>();
+        healthBar = GetComponentInChildren<FloatingHealthBar>();
+        health = maxHealth;
+        healthBar.UpdateHealthBar(health, maxHealth);
     }
 
     public void TakeDamage(float damage)
     {
         health -= damage;
+        healthBar.UpdateHealthBar(health, maxHealth);
         if (health <= 0)
         {
             if (boss != null)
