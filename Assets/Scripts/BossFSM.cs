@@ -59,6 +59,9 @@ public class BossFSM : MonoBehaviour
     private GameObject[] activeTotemObjects = new GameObject[2];
     private int totemsDestroyed = 0;
 
+    [SerializeField] private GameObject shieldEffectPrefab; // Add this field
+    private GameObject activeShieldEffect; // Add this field
+
     private void Start()
     {
         currentHealth = maxHealth;
@@ -79,6 +82,9 @@ public class BossFSM : MonoBehaviour
         }
 
         centerPosition = Vector3.zero; // Set this to your arena's center position
+
+        // Initialize shield effect if we start with shields
+        UpdateShieldEffect();
     }
 
     public void TakeDamage(float damage)
@@ -92,6 +98,9 @@ public class BossFSM : MonoBehaviour
             {
                 shieldBar.UpdateShieldBar(currentShield, maxShield);
             }
+            
+            // Update shield effect when shield changes
+            UpdateShieldEffect();
             return; // Don't damage health while shield is up
         }
 
@@ -246,6 +255,9 @@ public class BossFSM : MonoBehaviour
         {
             shieldBar.UpdateShieldBar(currentShield, maxShield);
         }
+        
+        // Add this line to update the shield effect
+        UpdateShieldEffect();
 
         if (wallsDestroyed >= wallsRequired && !isAngryFromWalls && currentState != BossState.Angry)
         {
@@ -418,6 +430,11 @@ public class BossFSM : MonoBehaviour
                 Destroy(totem);
             }
         }
+
+        if (activeShieldEffect != null)
+        {
+            Destroy(activeShieldEffect);
+        }
     }
 
     public void TotemDestroyed()
@@ -430,6 +447,27 @@ public class BossFSM : MonoBehaviour
             if (player != null)
             {
                 player.GrantImmortality();
+            }
+        }
+    }
+
+    private void UpdateShieldEffect()
+    {
+        if (currentShield > 0)
+        {
+            // Create shield effect if it doesn't exist
+            if (activeShieldEffect == null && shieldEffectPrefab != null)
+            {
+                activeShieldEffect = Instantiate(shieldEffectPrefab, transform);
+            }
+        }
+        else
+        {
+            // Destroy shield effect if it exists
+            if (activeShieldEffect != null)
+            {
+                Destroy(activeShieldEffect);
+                activeShieldEffect = null;
             }
         }
     }

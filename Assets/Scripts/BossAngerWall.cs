@@ -48,6 +48,12 @@ public class BossAngerWall : MonoBehaviour
     {
         spriteRenderer.enabled = false;
         wallCollider.enabled = false;
+        
+        // Add screen shake when wall breaks
+        if (Camera.main.TryGetComponent<CameraShake>(out var cameraShake))
+        {
+            cameraShake.ShakeCamera(0.3f, 0.2f); // Duration: 0.3s, Intensity: 0.2
+        }
     }
 
     private void EnableWall()

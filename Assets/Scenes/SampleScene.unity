@@ -1088,6 +1088,7 @@ GameObject:
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
   - component: {fileID: 519420030}
+  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1213,6 +1214,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &519420033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 313fe37695024874cae6fb2a6c726186, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &526771562
 GameObject:
   m_ObjectHideFlags: 0
@@ -2183,6 +2196,7 @@ MonoBehaviour:
   totemPrefab: {fileID: 8970701365672867727, guid: 10580cb1670f3344290118666382ff56, type: 3}
   totem1Offset: {x: 0, y: 2}
   totem2Offset: {x: 0, y: -2}
+  shieldEffectPrefab: {fileID: 4779246192295787206, guid: 62b982138e180f843adb998ab71a4e58, type: 3}
 --- !u!114 &1000155384
 MonoBehaviour:
   m_ObjectHideFlags: 0
