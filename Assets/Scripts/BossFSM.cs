@@ -173,6 +173,14 @@ public class BossFSM : MonoBehaviour
     public void WallDestroyed()
     {
         wallsDestroyed++;
+        
+        // Add shield when wall is destroyed (up to max shield)
+        currentShield = Mathf.Min(currentShield + 1f, maxShield);
+        if (shieldBar != null)
+        {
+            shieldBar.UpdateShieldBar(currentShield, maxShield);
+        }
+
         if (wallsDestroyed >= wallsRequired && !isAngryFromWalls && currentState != BossState.Angry)
         {
             isAngryFromWalls = true;
