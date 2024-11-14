@@ -48,6 +48,11 @@ public class BossFSM : MonoBehaviour
     [SerializeField] private float finalStandAttackDuration = 10f;
     private bool isFinalAttackStarted = false;
 
+    [SerializeField] private GameObject aoeEffectPrefab; // Assign a sprite or particle effect in inspector
+    [SerializeField] private float maxAoeRadius = 20f;   // Maximum size of the AOE
+    private GameObject currentAoe;
+    private float startingAoeScale = 0.1f;  // Initial size of the AOE
+
     private void Start()
     {
         currentHealth = maxHealth;
@@ -188,10 +193,18 @@ public class BossFSM : MonoBehaviour
     private void HandleFinalStand()
     {
         transform.position = centerPosition;
-        shootLogic.ShootCooldown = 100f; // Very long cooldown to prevent shooting during wait
+        shootLogic.ShootCooldown = 100f;
         shootLogic.UseAttackPattern = false;
-        chaseLogic.enabled = true; // Disable movement during final stand
-        isFinalAttackStarted = false; // Reset the attack state
+        chaseLogic.enabled = false;
+        isFinalAttackStarted = false;
+
+        // Create the initial AOE effect
+        if (aoeEffectPrefab != null)
+        {
+            currentAoe = Instantiate(aoeEffectPrefab, centerPosition, Quaternion.identity);
+            currentAoe.transform.localScale = Vector3.one * startingAoeScale;
+        }
+        
         Debug.Log("Entering Final Stand");
     }
 
@@ -236,10 +249,24 @@ public class BossFSM : MonoBehaviour
             transform.position = centerPosition;
             
             finalStandTimer += Time.deltaTime;
+
+            // Update AOE size based on timer
+            if (currentAoe != null && !isFinalAttackStarted)
+            {
+                float progress = finalStandTimer / finalStandDuration;
+                float currentRadius = Mathf.Lerp(startingAoeScale, maxAoeRadius, progress);
+                currentAoe.transform.localScale = Vector3.one * currentRadius;
+            }
             
             // After 20 seconds, start the deadly attack
             if (finalStandTimer >= finalStandDuration && !isFinalAttackStarted)
             {
+                // Destroy the AOE effect
+                if (currentAoe != null)
+                {
+                    Destroy(currentAoe);
+                }
+
                 // Configure the deadly attack
                 shootLogic.ShootCooldown = finalStandShootCooldown;
                 shootLogic.BulletSpeed = finalStandProjectileSpeed;
@@ -248,14 +275,14 @@ public class BossFSM : MonoBehaviour
                 isFinalAttackStarted = true;
             }
             
-            // After attack duration (additional 10 seconds), end the game
+            // After attack duration, end the game
             if (isFinalAttackStarted && finalStandTimer >= (finalStandDuration + finalStandAttackDuration))
             {
                 UnityEngine.SceneManagement.SceneManager.LoadScene(
                     UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex
                 );
             }
-            return; // Skip ALL other state checks during final stand
+            return;
         }
 
         // Only check for wall-based anger if NOT in final stand
@@ -349,6 +376,15 @@ public class BossFSM : MonoBehaviour
             case BossState.FinalStand:
                 bossRenderer.material.color = Color.red;
                 break;
+        }
+    }
+
+    // Add cleanup in case the boss is destroyed before finishing
+    private void OnDestroy()
+    {
+        if (currentAoe != null)
+        {
+            Destroy(currentAoe);
         }
     }
 }

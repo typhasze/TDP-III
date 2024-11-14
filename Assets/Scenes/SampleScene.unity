@@ -2178,6 +2178,8 @@ MonoBehaviour:
   finalStandShootCooldown: 0.1
   finalStandProjectileSpeed: 20
   finalStandAttackDuration: 15
+  aoeEffectPrefab: {fileID: 3919113231217584866, guid: c7cfa483e67867a49bf481ebefcce2be, type: 3}
+  maxAoeRadius: 20
 --- !u!114 &1000155384
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2506,7 +2508,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  damageTaken: 10
+  damageTaken: 0
 --- !u!114 &1084743071
 MonoBehaviour:
   m_ObjectHideFlags: 0
