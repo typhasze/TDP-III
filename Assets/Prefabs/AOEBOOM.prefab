@@ -102,3 +102,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startColor: {r: 1, g: 0, b: 0, a: 0.2}
   endColor: {r: 1, g: 0, b: 0, a: 0.4}
+  shakeIntensity: 0.1
+  shakeFrequency: 25
