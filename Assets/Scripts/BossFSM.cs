@@ -112,13 +112,25 @@ public class BossFSM : MonoBehaviour
 
     private void UpdateState()
     {
-        // Skip state changes if currently angry or in final stand
-        if (currentState == BossState.Angry || currentState == BossState.FinalStand)
+        // Only skip normal state changes if angry (but allow Final Stand transition)
+        if (currentState == BossState.Angry)
+        {
+            // Check for Final Stand transition even during angry state
+            if (currentHealth <= 0f)
+            {
+                TransitionToState(BossState.FinalStand);
+                return;
+            }
+            return;
+        }
+
+        // Skip if already in final stand
+        if (currentState == BossState.FinalStand)
             return;
 
         float healthPercentage = (currentHealth / maxHealth) * 100f;
 
-        if (currentHealth <= 0f && currentState != BossState.FinalStand)
+        if (currentHealth <= 0f)
         {
             TransitionToState(BossState.FinalStand);
         }
@@ -243,28 +255,33 @@ public class BossFSM : MonoBehaviour
 
     public void WallDestroyed()
     {
+        Debug.Log($"Wall destroyed. Count: {wallsDestroyed + 1}/{wallsRequired}");
         // Don't count wall destruction during Final Stand
         if (currentState == BossState.FinalStand)
             return;
         
-        wallsDestroyed++;
-        
-        // Add shield when wall is destroyed (up to max shield)
-        currentShield = Mathf.Min(currentShield + 1f, maxShield);
-        if (shieldBar != null)
+        // Add validation to ensure we don't over-count
+        if (wallsDestroyed < wallsRequired)
         {
-            shieldBar.UpdateShieldBar(currentShield, maxShield);
-        }
-        
-        // Add this line to update the shield effect
-        UpdateShieldEffect();
+            wallsDestroyed++;
+            
+            // Add shield when wall is destroyed (up to max shield)
+            currentShield = Mathf.Min(currentShield + 1f, maxShield);
+            if (shieldBar != null)
+            {
+                shieldBar.UpdateShieldBar(currentShield, maxShield);
+            }
+            
+            UpdateShieldEffect();
 
-        if (wallsDestroyed >= wallsRequired && !isAngryFromWalls && currentState != BossState.Angry)
-        {
-            isAngryFromWalls = true;
-            previousState = currentState;
-            TransitionToState(BossState.Angry);
-            angerTimer = 0f;
+            // Only trigger anger if we've destroyed exactly the required number
+            if (wallsDestroyed == wallsRequired && !isAngryFromWalls && currentState != BossState.Angry)
+            {
+                isAngryFromWalls = true;
+                previousState = currentState;
+                TransitionToState(BossState.Angry);
+                angerTimer = 0f;
+            }
         }
     }
 
