@@ -53,6 +53,12 @@ public class BossFSM : MonoBehaviour
     private GameObject currentAoe;
     private float startingAoeScale = 0.1f;  // Initial size of the AOE
 
+    [SerializeField] private GameObject totemPrefab;
+    [SerializeField] private Vector2 totem1Offset = new Vector2(0f, 2f);
+    [SerializeField] private Vector2 totem2Offset = new Vector2(0f, -2f);
+    private GameObject[] activeTotemObjects = new GameObject[2];
+    private int totemsDestroyed = 0;
+
     private void Start()
     {
         currentHealth = maxHealth;
@@ -197,6 +203,10 @@ public class BossFSM : MonoBehaviour
         shootLogic.UseAttackPattern = false;
         chaseLogic.enabled = true;
         isFinalAttackStarted = false;
+        totemsDestroyed = 0;
+
+        // Spawn totems
+        SpawnTotems();
 
         // Create the initial AOE effect
         if (aoeEffectPrefab != null)
@@ -206,6 +216,20 @@ public class BossFSM : MonoBehaviour
         }
         
         Debug.Log("Entering Final Stand");
+    }
+
+    private void SpawnTotems()
+    {
+        if (totemPrefab != null)
+        {
+            // Spawn first totem
+            Vector3 totem1Pos = centerPosition + new Vector3(totem1Offset.x, totem1Offset.y, 0);
+            activeTotemObjects[0] = Instantiate(totemPrefab, totem1Pos, Quaternion.identity);
+
+            // Spawn second totem
+            Vector3 totem2Pos = centerPosition + new Vector3(totem2Offset.x, totem2Offset.y, 0);
+            activeTotemObjects[1] = Instantiate(totemPrefab, totem2Pos, Quaternion.identity);
+        }
     }
 
     public void WallDestroyed()
@@ -385,6 +409,28 @@ public class BossFSM : MonoBehaviour
         if (currentAoe != null)
         {
             Destroy(currentAoe);
+        }
+
+        foreach (GameObject totem in activeTotemObjects)
+        {
+            if (totem != null)
+            {
+                Destroy(totem);
+            }
+        }
+    }
+
+    public void TotemDestroyed()
+    {
+        totemsDestroyed++;
+        if (totemsDestroyed >= 2)
+        {
+            // Grant immortality to player
+            PlayerHealth player = FindFirstObjectByType<PlayerHealth>();
+            if (player != null)
+            {
+                player.GrantImmortality();
+            }
         }
     }
 }

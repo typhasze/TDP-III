@@ -2180,6 +2180,9 @@ MonoBehaviour:
   finalStandAttackDuration: 15
   aoeEffectPrefab: {fileID: 3919113231217584866, guid: c7cfa483e67867a49bf481ebefcce2be, type: 3}
   maxAoeRadius: 20
+  totemPrefab: {fileID: 8970701365672867727, guid: 10580cb1670f3344290118666382ff56, type: 3}
+  totem1Offset: {x: 0, y: 2}
+  totem2Offset: {x: 0, y: -2}
 --- !u!114 &1000155384
 MonoBehaviour:
   m_ObjectHideFlags: 0

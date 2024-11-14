@@ -7,6 +7,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float damageTaken = 10f;
     private float currentHealth;
     private FloatingHealthBar healthBar;
+    private bool isImmortal = false;
 
     private void Start()
     {
@@ -16,6 +17,8 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        if (isImmortal) return;
+
         currentHealth = Mathf.Max(currentHealth - damage, 0f);
         healthBar.UpdateHealthBar(currentHealth, maxHealth);
 
@@ -61,5 +64,11 @@ public class PlayerHealth : MonoBehaviour
         {
             TakeDamage(1f);
         }
+    }
+
+    public void GrantImmortality()
+    {
+        isImmortal = true;
+        Debug.Log("Player is now immortal!");
     }
 } 
