@@ -129,11 +129,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 439956217803322968, guid: 7eb0bea8e49410146acf270d39d26902, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 400
+      value: 287.5569
       objectReference: {fileID: 0}
     - target: {fileID: 439956217803322968, guid: 7eb0bea8e49410146acf270d39d26902, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 30
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 439956217803322968, guid: 7eb0bea8e49410146acf270d39d26902, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -141,7 +141,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 439956217803322968, guid: 7eb0bea8e49410146acf270d39d26902, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 287.8
+      value: 176.17
       objectReference: {fileID: 0}
     - target: {fileID: 1414131254837003756, guid: 7eb0bea8e49410146acf270d39d26902, type: 3}
       propertyPath: m_Pivot.x
@@ -235,6 +235,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1414131254837003756, guid: 7eb0bea8e49410146acf270d39d26902, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2273533450457228714, guid: 7eb0bea8e49410146acf270d39d26902, type: 3}
       propertyPath: m_Color.b
       value: 0.92466897
@@ -270,6 +274,10 @@ PrefabInstance:
     - target: {fileID: 5373033161152099663, guid: 7eb0bea8e49410146acf270d39d26902, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7350340991586711726, guid: 7eb0bea8e49410146acf270d39d26902, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7350340991586711726, guid: 7eb0bea8e49410146acf270d39d26902, type: 3}
       propertyPath: m_PresetInfoIsWorld
@@ -478,11 +486,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 439956217803322968, guid: 7eb0bea8e49410146acf270d39d26902, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 800
+      value: 507.6482
       objectReference: {fileID: 0}
     - target: {fileID: 439956217803322968, guid: 7eb0bea8e49410146acf270d39d26902, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 30
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 439956217803322968, guid: 7eb0bea8e49410146acf270d39d26902, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -490,7 +498,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 439956217803322968, guid: 7eb0bea8e49410146acf270d39d26902, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -290
+      value: -178.8
       objectReference: {fileID: 0}
     - target: {fileID: 1414131254837003756, guid: 7eb0bea8e49410146acf270d39d26902, type: 3}
       propertyPath: m_Pivot.x
@@ -622,11 +630,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5373033161152099663, guid: 7eb0bea8e49410146acf270d39d26902, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
-      value: 25
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7350340991586711726, guid: 7eb0bea8e49410146acf270d39d26902, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7350340991586711726, guid: 7eb0bea8e49410146acf270d39d26902, type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7350340991586711726, guid: 7eb0bea8e49410146acf270d39d26902, type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 800
+      objectReference: {fileID: 0}
+    - target: {fileID: 7350340991586711726, guid: 7eb0bea8e49410146acf270d39d26902, type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 600
       objectReference: {fileID: 0}
     - target: {fileID: 8113270915398985134, guid: 7eb0bea8e49410146acf270d39d26902, type: 3}
       propertyPath: m_Name
@@ -1621,7 +1641,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 528.65717}
+  m_margin: {x: 0, y: 505.44296, z: 0, w: 505.13092}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2507,11 +2527,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 439956217803322968, guid: 7eb0bea8e49410146acf270d39d26902, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 400
+      value: 217.5925
       objectReference: {fileID: 0}
     - target: {fileID: 439956217803322968, guid: 7eb0bea8e49410146acf270d39d26902, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 30
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 439956217803322968, guid: 7eb0bea8e49410146acf270d39d26902, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -2519,7 +2539,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 439956217803322968, guid: 7eb0bea8e49410146acf270d39d26902, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -271.64
+      value: -171.6
       objectReference: {fileID: 0}
     - target: {fileID: 1414131254837003756, guid: 7eb0bea8e49410146acf270d39d26902, type: 3}
       propertyPath: m_Pivot.x
@@ -2658,6 +2678,10 @@ PrefabInstance:
       value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 7350340991586711726, guid: 7eb0bea8e49410146acf270d39d26902, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7350340991586711726, guid: 7eb0bea8e49410146acf270d39d26902, type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 0
       objectReference: {fileID: 0}
@@ -2771,7 +2795,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 517.1915, z: 0, w: 1.2802124}
+  m_margin: {x: 0, y: 506.90182, z: 0, w: 505.47583}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -3265,8 +3289,8 @@ Transform:
   m_GameObject: {fileID: 1539639674}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -9.29, y: 0.6, z: 0.061474558}
-  m_LocalScale: {x: 0.9994, y: 10.9999, z: 1}
+  m_LocalPosition: {x: -9.79, y: 0.6, z: 0.061474558}
+  m_LocalScale: {x: 1.9993998, y: 10.9999, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1011540358}
@@ -3427,8 +3451,8 @@ Transform:
   m_GameObject: {fileID: 1698973196}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.44, y: 0.62060267, z: 0.061474558}
-  m_LocalScale: {x: 0.9993681, y: 10.9999, z: 1}
+  m_LocalPosition: {x: 9.94, y: 0.62060267, z: 0.061474558}
+  m_LocalScale: {x: 1.9993359, y: 10.9999, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1011540358}
@@ -3561,7 +3585,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 517.1915, z: 0, w: 1.2802124}
+  m_margin: {x: 0, y: 505.26483, z: 0, w: 536.23804}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
