@@ -53,6 +53,10 @@ public class BossFSM : MonoBehaviour
 
     private void UpdateState()
     {
+        // Skip state changes if currently angry
+        if (currentState == BossState.Angry)
+            return;
+
         float healthPercentage = (currentHealth / maxHealth) * 100f;
 
         if (healthPercentage <= 25f && currentState != BossState.PhaseThree)
