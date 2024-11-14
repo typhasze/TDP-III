@@ -3,6 +3,8 @@ using UnityEngine;
 public class BossAngerWall : MonoBehaviour
 {
     [SerializeField] private int hitsToBreak = 5;
+    [SerializeField] private Color startColor = new Color(0.25f, 0.17f, 0.11f); // #412B1D
+    [SerializeField] private Color endColor = new Color(0.8f, 0.4f, 0.2f);      // More intense orange/brown
     private int currentHits = 0;
     
     private SpriteRenderer spriteRenderer;
@@ -19,6 +21,9 @@ public class BossAngerWall : MonoBehaviour
         if (other.CompareTag("BossDamage"))
         {
             currentHits++;
+            float damageProgress = (float)currentHits / hitsToBreak;
+            spriteRenderer.color = Color.Lerp(startColor, endColor, damageProgress);
+            
             if (currentHits >= hitsToBreak)
             {
                 // Find and notify the boss
@@ -35,6 +40,7 @@ public class BossAngerWall : MonoBehaviour
     public void ResetWall()
     {
         currentHits = 0;
+        spriteRenderer.color = startColor;
         EnableWall();
     }
 
