@@ -8,6 +8,8 @@ public class PlayerHealth : MonoBehaviour
     private float currentHealth;
     private FloatingHealthBar healthBar;
     private bool isImmortal = false;
+    [SerializeField] private GameObject shieldEffectPrefab;
+    private GameObject activeShieldEffect;
 
     private void Start()
     {
@@ -69,6 +71,24 @@ public class PlayerHealth : MonoBehaviour
     public void GrantImmortality()
     {
         isImmortal = true;
+        SpawnShieldEffect();
         Debug.Log("Player is now immortal!");
+    }
+
+    private void SpawnShieldEffect()
+    {
+        if (shieldEffectPrefab != null && activeShieldEffect == null)
+        {
+            activeShieldEffect = Instantiate(shieldEffectPrefab, transform);
+            activeShieldEffect.transform.localPosition = Vector3.zero;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (activeShieldEffect != null)
+        {
+            Destroy(activeShieldEffect);
+        }
     }
 } 
