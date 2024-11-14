@@ -2175,8 +2175,8 @@ MonoBehaviour:
   shootCooldown: 1
   maxShield: 3
   finalStandDuration: 20
-  finalStandShootCooldown: 0.1
-  finalStandProjectileSpeed: 20
+  finalStandShootCooldown: 0.01
+  finalStandProjectileSpeed: 2
   finalStandAttackDuration: 15
   aoeEffectPrefab: {fileID: 3919113231217584866, guid: c7cfa483e67867a49bf481ebefcce2be, type: 3}
   maxAoeRadius: 20

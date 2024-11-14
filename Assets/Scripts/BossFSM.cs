@@ -195,7 +195,7 @@ public class BossFSM : MonoBehaviour
         transform.position = centerPosition;
         shootLogic.ShootCooldown = 100f;
         shootLogic.UseAttackPattern = false;
-        chaseLogic.enabled = false;
+        chaseLogic.enabled = true;
         isFinalAttackStarted = false;
 
         // Create the initial AOE effect
