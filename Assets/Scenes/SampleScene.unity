@@ -2167,13 +2167,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  damageTaken: 2.5
+  damageTaken: 50
   angerDuration: 8
   angerInterval: 10
   wallsRequired: 6
   bossRenderer: {fileID: 937266735}
   shootCooldown: 1
   maxShield: 3
+  finalStandDuration: 20
+  finalStandShootCooldown: 0.1
+  finalStandProjectileSpeed: 20
+  finalStandAttackDuration: 15
 --- !u!114 &1000155384
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -7,7 +7,8 @@ public class BossFSM : MonoBehaviour
         PhaseOne,    // 100% - 50% HP
         PhaseTwo,    // 50% - 25% HP
         PhaseThree,  // 25% - 0% HP
-        Angry        // Special behavior
+        Angry,       // Special behavior
+        FinalStand   // Final phase at 0 HP
     }
 
     [SerializeField] private float maxHealth = 100f;
@@ -38,6 +39,15 @@ public class BossFSM : MonoBehaviour
     private float currentShield;
     private FloatingShieldBar shieldBar;
 
+    [SerializeField] private float finalStandDuration = 20f;
+    [SerializeField] private float finalStandShootCooldown = 0.1f;
+    [SerializeField] private float finalStandProjectileSpeed = 20f;
+    private float finalStandTimer = 0f;
+    private Vector3 centerPosition;
+
+    [SerializeField] private float finalStandAttackDuration = 10f;
+    private bool isFinalAttackStarted = false;
+
     private void Start()
     {
         currentHealth = maxHealth;
@@ -56,6 +66,8 @@ public class BossFSM : MonoBehaviour
         {
             shieldBar.UpdateShieldBar(currentShield, maxShield);
         }
+
+        centerPosition = Vector3.zero; // Set this to your arena's center position
     }
 
     public void TakeDamage(float damage)
@@ -80,13 +92,17 @@ public class BossFSM : MonoBehaviour
 
     private void UpdateState()
     {
-        // Skip state changes if currently angry
-        if (currentState == BossState.Angry)
+        // Skip state changes if currently angry or in final stand
+        if (currentState == BossState.Angry || currentState == BossState.FinalStand)
             return;
 
         float healthPercentage = (currentHealth / maxHealth) * 100f;
 
-        if (healthPercentage <= 25f && currentState != BossState.PhaseThree)
+        if (currentHealth <= 0f && currentState != BossState.FinalStand)
+        {
+            TransitionToState(BossState.FinalStand);
+        }
+        else if (healthPercentage <= 25f && currentState != BossState.PhaseThree)
         {
             TransitionToState(BossState.PhaseThree);
         }
@@ -97,10 +113,6 @@ public class BossFSM : MonoBehaviour
         else if (healthPercentage > 50f && currentState != BossState.PhaseOne)
         {
             TransitionToState(BossState.PhaseOne);
-        }
-        else if (currentHealth <= 0f)
-        {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
         }
     }
 
@@ -128,6 +140,9 @@ public class BossFSM : MonoBehaviour
                 break;
             case BossState.Angry:
                 HandleAngryState();
+                break;
+            case BossState.FinalStand:
+                HandleFinalStand();
                 break;
         }
     }
@@ -170,8 +185,22 @@ public class BossFSM : MonoBehaviour
         Debug.Log("Entering Angry State");
     }
 
+    private void HandleFinalStand()
+    {
+        transform.position = centerPosition;
+        shootLogic.ShootCooldown = 100f; // Very long cooldown to prevent shooting during wait
+        shootLogic.UseAttackPattern = false;
+        chaseLogic.enabled = true; // Disable movement during final stand
+        isFinalAttackStarted = false; // Reset the attack state
+        Debug.Log("Entering Final Stand");
+    }
+
     public void WallDestroyed()
     {
+        // Don't count wall destruction during Final Stand
+        if (currentState == BossState.FinalStand)
+            return;
+        
         wallsDestroyed++;
         
         // Add shield when wall is destroyed (up to max shield)
@@ -201,6 +230,35 @@ public class BossFSM : MonoBehaviour
 
     private void Update()
     {
+        if (currentState == BossState.FinalStand)
+        {
+            // Force position to stay at center
+            transform.position = centerPosition;
+            
+            finalStandTimer += Time.deltaTime;
+            
+            // After 20 seconds, start the deadly attack
+            if (finalStandTimer >= finalStandDuration && !isFinalAttackStarted)
+            {
+                // Configure the deadly attack
+                shootLogic.ShootCooldown = finalStandShootCooldown;
+                shootLogic.BulletSpeed = finalStandProjectileSpeed;
+                shootLogic.UseAttackPattern = false;
+                shootLogic.Type = EnemyShootLogic.ShotType.AOE;
+                isFinalAttackStarted = true;
+            }
+            
+            // After attack duration (additional 10 seconds), end the game
+            if (isFinalAttackStarted && finalStandTimer >= (finalStandDuration + finalStandAttackDuration))
+            {
+                UnityEngine.SceneManagement.SceneManager.LoadScene(
+                    UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex
+                );
+            }
+            return; // Skip ALL other state checks during final stand
+        }
+
+        // Only check for wall-based anger if NOT in final stand
         if (currentState != BossState.Angry)
         {
             if (wallsDestroyed >= wallsRequired)
@@ -220,7 +278,7 @@ public class BossFSM : MonoBehaviour
                 angerTimer = 0f;
             }
         }
-        else
+        else if (currentState == BossState.Angry)
         {
             angerTimer += Time.deltaTime;
             if (angerTimer >= angerDuration)
@@ -287,6 +345,9 @@ public class BossFSM : MonoBehaviour
                 break;
             case BossState.Angry:
                 bossRenderer.material.color = Color.red; // Crimson/red
+                break;
+            case BossState.FinalStand:
+                bossRenderer.material.color = Color.red;
                 break;
         }
     }
